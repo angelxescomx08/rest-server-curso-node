@@ -1,5 +1,6 @@
 import express, { type Express } from "express";
 import cors from "cors";
+import router from "../routes/user";
 
 export class Server {
   app: Express;
@@ -15,40 +16,15 @@ export class Server {
     //CORS
     this.app.use(cors());
 
+    //Lectura y parseo del body
+    this.app.use(express.json());
+
     //directorio publico
     this.app.use(express.static("public"));
   }
 
   routes() {
-    this.app.get("/api", (req, res) => {
-      res.json({
-        msg: "api GET",
-      });
-    });
-
-    this.app.post("/api", (req, res) => {
-      res.status(201).json({
-        msg: "api POST",
-      });
-    });
-
-    this.app.put("/api", (req, res) => {
-      res.json({
-        msg: "api PUT",
-      });
-    });
-
-    this.app.delete("/api", (req, res) => {
-      res.json({
-        msg: "api DELETE",
-      });
-    });
-
-    this.app.patch("/api", (req, res) => {
-      res.json({
-        msg: "api PATCH",
-      });
-    });
+    this.app.use(router);
   }
 
   listen() {
