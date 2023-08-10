@@ -15,7 +15,7 @@ router.post("/api", userPOST);
 
 router.put("/api", userPUT);
 
-router.delete("/api", userDELETE);
+router.delete("/api/:id", userDELETE);
 
 router.patch("/api", userPATCH);
 
