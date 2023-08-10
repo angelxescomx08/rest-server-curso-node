@@ -1,6 +1,6 @@
 # Rest Server Curso Node
 
-Un pequeño rest server para aprender las bases de Nodejs contruido con typescript.
+Un pequeño rest server para aprender las bases de Nodejs construido con typescript, este proyecto no tiene ningún fin especial más que el aprendizaje de Nodejs por lo que el código no hace nada en particular solo aprender acerca de la sintaxis.
 
 ## Inicializar el proyecto en desarrollo
 
