@@ -6,9 +6,11 @@ import { dbConnection } from "../database/config";
 export class Server {
   app: Express;
   port: string | undefined;
+  userPath: string | undefined;
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.userPath = "/api/user";
 
     //conectar db
     this.connectDB();
@@ -36,7 +38,7 @@ export class Server {
   }
 
   routes() {
-    this.app.use(router);
+    this.app.use("/api/user", router);
   }
 
   listen() {
