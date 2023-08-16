@@ -7,6 +7,7 @@ import {
   userPOST,
   userPUT,
 } from "../controllers/user";
+import { validarCampos } from "../middlewares/validar-campos";
 
 const router = Router();
 
@@ -14,7 +15,15 @@ router.get("/", userGET);
 
 router.post(
   "/",
-  [check("email", "El correo ya está ocupado").isEmail()],
+  [
+    check("name", "El nombre es obligatorio").not().isEmpty(),
+    check("password", "La contraseña debe tener más de 6 caracteres").isLength({
+      min: 6,
+    }),
+    check("rol", "El rol no es válido").isIn(["ADMIN_ROL", "USER_ROL"]),
+    check("email", "El correo electrónico no es válido").isEmail(),
+    validarCampos,
+  ],
   userPOST
 );
 
