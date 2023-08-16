@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { check } from "express-validator";
 import {
   userDELETE,
   userGET,
@@ -11,7 +12,11 @@ const router = Router();
 
 router.get("/", userGET);
 
-router.post("/", userPOST);
+router.post(
+  "/",
+  [check("email", "El correo ya está ocupado").isEmail()],
+  userPOST
+);
 
 router.put("/", userPUT);
 
