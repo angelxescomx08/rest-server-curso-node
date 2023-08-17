@@ -30,9 +30,17 @@ export const userPOST = async (req: Request, res: Response) => {
   });
 };
 
-export const userPUT = (req: Request, res: Response) => {
+export const userPUT = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { password, google, email, ...resto } = req.body;
+  if (password) {
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(password, salt);
+  }
+  const user = await User.findByIdAndUpdate(id, resto);
   res.json({
-    msg: "api PUT - controller",
+    message: "Usuario actualizado correctamente",
+    user,
   });
 };
 

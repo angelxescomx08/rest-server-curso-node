@@ -30,7 +30,7 @@ router.post(
   userPOST
 );
 
-router.put("/", userPUT);
+router.put("/:id", userPUT);
 
 router.delete("/:id", userDELETE);
 
