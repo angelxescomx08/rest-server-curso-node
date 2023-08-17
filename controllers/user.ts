@@ -20,17 +20,6 @@ export const userPOST = async (req: Request, res: Response) => {
     rol,
   });
 
-  //verificar si el correo existe
-  const emailExists = await User.findOne({
-    email,
-  });
-
-  if (emailExists) {
-    return res.status(400).json({
-      message: "El correo electrónico ya está ocupado",
-    });
-  }
-
   //cifrar la contraseña
   const salt = bcryptjs.genSaltSync();
   user.password = bcryptjs.hashSync(password, salt);

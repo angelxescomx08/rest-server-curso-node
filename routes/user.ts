@@ -8,7 +8,7 @@ import {
   userPUT,
 } from "../controllers/user";
 import { validarCampos } from "../middlewares/validar-campos";
-import { isValidRol } from "../helpers/db-validators";
+import { existsEmail, isValidRol } from "../helpers/db-validators";
 
 const router = Router();
 
@@ -23,6 +23,7 @@ router.post(
     }),
     check("rol", "El rol no es válido").isIn(["ADMIN_ROL", "USER_ROL"]),
     check("email", "El correo electrónico no es válido").isEmail(),
+    check("email").custom(existsEmail),
     check("rol").custom(isValidRol),
     validarCampos,
   ],
