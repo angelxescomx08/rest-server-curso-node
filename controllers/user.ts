@@ -55,11 +55,12 @@ export const userPUT = async (req: Request, res: Response) => {
   });
 };
 
-export const userDELETE = (req: Request, res: Response) => {
+export const userDELETE = async (req: Request, res: Response) => {
   const { id } = req.params;
+  const user = await User.findByIdAndUpdate(id, { state: false });
   res.json({
-    msg: "api DELETE - controller",
-    id,
+    message: "Usuario eliminado exitosamente",
+    user,
   });
 };
 

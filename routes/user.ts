@@ -41,7 +41,15 @@ router.put(
   userPUT
 );
 
-router.delete("/:id", userDELETE);
+router.delete(
+  "/:id",
+  [
+    check("id", "El id no es un id válido de mongo").isMongoId(),
+    check("id").custom(existIdUser),
+    validarCampos,
+  ],
+  userDELETE
+);
 
 router.patch("/", userPATCH);
 
