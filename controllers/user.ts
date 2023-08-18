@@ -2,13 +2,15 @@ import type { Request, Response } from "express";
 import { User } from "../models/user";
 import bcryptjs from "bcryptjs";
 
-export const userGET = (req: Request, res: Response) => {
-  const { page = 1, limit = 100 } = req.query;
-  res.json({
-    msg: "api GET - controller",
-    page,
-    limit,
-  });
+export const userGET = async (req: Request, res: Response) => {
+  const { page = 1, limit = 5 } = req.query;
+  const per_page = Number(limit);
+  const actual_page = Number(page) - 1 < 0 ? 1 : Number(page) - 1;
+
+  const users = await User.find()
+    .limit(per_page)
+    .skip(actual_page * per_page);
+  res.json(users);
 };
 
 export const userPOST = async (req: Request, res: Response) => {
