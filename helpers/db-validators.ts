@@ -19,3 +19,11 @@ export const existsEmail = async (email: string) => {
     throw new Error(`El correo electrónico ${email} ya está ocupado`);
   }
 };
+
+export const existIdUser = async (id: string) => {
+  const userExist = await User.findById(id);
+
+  if (!userExist) {
+    throw new Error(`El id: ${id} no existe en la base de datos`);
+  }
+};

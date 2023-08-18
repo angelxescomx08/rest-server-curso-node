@@ -8,7 +8,7 @@ import {
   userPUT,
 } from "../controllers/user";
 import { validarCampos } from "../middlewares/validar-campos";
-import { existsEmail, isValidRol } from "../helpers/db-validators";
+import { existIdUser, existsEmail, isValidRol } from "../helpers/db-validators";
 
 const router = Router();
 
@@ -30,7 +30,16 @@ router.post(
   userPOST
 );
 
-router.put("/:id", userPUT);
+router.put(
+  "/:id",
+  [
+    check("id", "El id no es un id válido de mongo").isMongoId(),
+    check("id").custom(existIdUser),
+    check("rol").custom(isValidRol),
+    validarCampos,
+  ],
+  userPUT
+);
 
 router.delete("/:id", userDELETE);
 
