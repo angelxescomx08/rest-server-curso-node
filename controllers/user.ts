@@ -6,11 +6,20 @@ export const userGET = async (req: Request, res: Response) => {
   const { page = 1, limit = 5 } = req.query;
   const per_page = Number(limit);
   const actual_page = Number(page) - 1 < 0 ? 1 : Number(page) - 1;
+  const query = { state: true };
+  const data = await Promise.allSettled([
+    User.countDocuments(query),
+    User.find(query)
+      .limit(per_page)
+      .skip(actual_page * per_page),
+  ]);
 
-  const users = await User.find()
-    .limit(per_page)
-    .skip(actual_page * per_page);
-  res.json(users);
+  const total = data[0].status === "fulfilled" ? data[0].value : 0;
+  const users = data[1].status === "fulfilled" ? data[1].value : [];
+  res.json({
+    total,
+    users,
+  });
 };
 
 export const userPOST = async (req: Request, res: Response) => {
