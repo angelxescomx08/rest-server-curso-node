@@ -1,6 +1,7 @@
 import { Response, Request } from "express";
 import { User } from "../models/user";
 import { compareSync } from "bcryptjs";
+import { generateJWT } from "../helpers/generate-jwt";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -30,9 +31,12 @@ export const login = async (req: Request, res: Response) => {
     }
 
     //generar JWT
+    const token = await generateJWT(user.id);
 
     res.json({
       message: "Login ok",
+      user,
+      token,
     });
   } catch (error) {
     res.status(500).json({

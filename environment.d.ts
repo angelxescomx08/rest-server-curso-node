@@ -4,5 +4,6 @@ namespace NodeJS {
     USER: string;
     PASSWORD: string;
     MONGODB_CNN: string;
+    SECRET_PRIVATE_KEY: string;
   }
 }
