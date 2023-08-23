@@ -29,6 +29,8 @@ export const userPOST = async (req: Request, res: Response) => {
     email,
     password,
     rol,
+    state: true,
+    google: false,
   });
 
   //cifrar la contraseña
