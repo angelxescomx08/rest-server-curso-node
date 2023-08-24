@@ -60,6 +60,8 @@ export const userPUT = async (req: Request, res: Response) => {
 export const userDELETE = async (req: Request, res: Response) => {
   const { id } = req.params;
   const user = await User.findByIdAndUpdate(id, { state: false });
+
+  const authenticatedUser = (req as any).user;
   res.json({
     message: "Usuario eliminado exitosamente",
     user,
