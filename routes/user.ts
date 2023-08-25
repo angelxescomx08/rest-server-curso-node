@@ -10,7 +10,8 @@ import {
 import { validarCampos } from "../middlewares/validar-campos";
 import { existIdUser, existsEmail, isValidRol } from "../helpers/db-validators";
 import { validarJWT } from "../middlewares/validar-jwt";
-import { isAdmin } from "../middlewares/validar-roles";
+import { hasRol, isAdmin } from "../middlewares/validar-roles";
+import { RolType } from "../interfaces/rol";
 
 const router = Router();
 
@@ -47,7 +48,8 @@ router.delete(
   "/:id",
   [
     validarJWT,
-    isAdmin,
+    //isAdmin,
+    hasRol(RolType.ADMIN_ROL, RolType.USER_ROL),
     check("id", "El id no es un id válido de mongo").isMongoId(),
     check("id").custom(existIdUser),
     validarCampos,
