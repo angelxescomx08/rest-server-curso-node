@@ -2,6 +2,7 @@ import { Response, Request } from "express";
 import { User } from "../models/user";
 import { compareSync } from "bcryptjs";
 import { generateJWT } from "../helpers/generate-jwt";
+import { googleLoginSchema } from "../schemas";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -41,6 +42,20 @@ export const login = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).json({
       message: "Algo salió mal",
+    });
+  }
+};
+
+export const googleSignIn = async (req: Request, res: Response) => {
+  try {
+    const { id_token } = googleLoginSchema.parse(req.body);
+    res.json({
+      message: "Éxito",
+      id_token,
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Debes enviar el id_token",
     });
   }
 };
