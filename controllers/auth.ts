@@ -3,6 +3,7 @@ import { User } from "../models/user";
 import { compareSync } from "bcryptjs";
 import { generateJWT } from "../helpers/generate-jwt";
 import { googleLoginSchema } from "../schemas";
+import { VerifyGoogleTokenError, verify } from "../helpers/google-verify";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -49,13 +50,23 @@ export const login = async (req: Request, res: Response) => {
 export const googleSignIn = async (req: Request, res: Response) => {
   try {
     const { id_token } = googleLoginSchema.parse(req.body);
+    const { email, name, picture } = await verify(id_token);
     res.json({
       message: "Éxito",
       id_token,
+      email,
+      name,
+      picture,
     });
   } catch (error) {
-    res.status(400).json({
-      message: "Debes enviar el id_token",
-    });
+    if (error instanceof VerifyGoogleTokenError) {
+      res.status(400).json({
+        message: "Error al verificar el token de google",
+      });
+    } else {
+      res.status(400).json({
+        message: "Debes enviar el id_token",
+      });
+    }
   }
 };
