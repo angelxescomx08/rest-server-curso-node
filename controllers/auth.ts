@@ -77,6 +77,7 @@ export const googleSignIn = async (req: Request, res: Response) => {
     res.json({
       message: "Éxito",
       token,
+      email,
     });
   } catch (error) {
     if (error instanceof VerifyGoogleTokenError) {
