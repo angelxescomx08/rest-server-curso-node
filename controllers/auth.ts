@@ -51,12 +51,32 @@ export const googleSignIn = async (req: Request, res: Response) => {
   try {
     const { id_token } = googleLoginSchema.parse(req.body);
     const { email, name, picture } = await verify(id_token);
+
+    let user = await User.findOne({ email });
+
+    //crear el usuario si no existe
+    if (!user) {
+      user = new User({
+        email,
+        name,
+        img: picture,
+        google: true,
+        state: true,
+        password: "a",
+      });
+      await user.save();
+    }
+
+    if (!user.state) {
+      return res.status(401).json({
+        message: "Hable con el administrador el usuario ha sido bloqueado",
+      });
+    }
+    //generar JWT
+    const token = await generateJWT(user.id);
     res.json({
       message: "Éxito",
-      id_token,
-      email,
-      name,
-      picture,
+      token,
     });
   } catch (error) {
     if (error instanceof VerifyGoogleTokenError) {
