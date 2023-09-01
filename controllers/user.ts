@@ -22,6 +22,20 @@ export const userGET = async (req: Request, res: Response) => {
   });
 };
 
+export const userGETById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).json({
+      message: `No existe el usuario con id ${id}`,
+    });
+  }
+  res.json({
+    message: "ok",
+    user,
+  });
+};
+
 export const userPOST = async (req: Request, res: Response) => {
   const { name, email, password, rol } = req.body;
   const user = new User({

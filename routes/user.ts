@@ -3,6 +3,7 @@ import { check } from "express-validator";
 import {
   userDELETE,
   userGET,
+  userGETById,
   userPATCH,
   userPOST,
   userPUT,
@@ -10,12 +11,18 @@ import {
 import { validarCampos } from "../middlewares/validar-campos";
 import { existIdUser, existsEmail, isValidRol } from "../helpers/db-validators";
 import { validarJWT } from "../middlewares/validar-jwt";
-import { hasRol, isAdmin } from "../middlewares/validar-roles";
+import { hasRol } from "../middlewares/validar-roles";
 import { RolType } from "../interfaces/rol";
 
 const router = Router();
 
 router.get("/", userGET);
+
+router.get(
+  "/:id",
+  [check("id", "El id no es un id válido de mongo").isMongoId(), validarCampos],
+  userGETById
+);
 
 router.post(
   "/",
