@@ -11,7 +11,7 @@ export class Server {
   authPath: string = "";
   constructor() {
     this.app = express();
-    this.port = process.env.PORT;
+    this.port = process.env.PORT || "3000";
     this.userPath = "/api/user";
     this.authPath = "/api/auth";
 
