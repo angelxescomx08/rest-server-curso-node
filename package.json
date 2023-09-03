@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon ./app.ts",
-    "start": "node dist/app.js",
+    "start": "npm run build && node dist/app.js",
     "build": "tsc",
-    "prestart": "npm run build",
     "tsc": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
