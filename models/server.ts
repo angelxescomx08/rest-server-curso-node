@@ -15,8 +15,6 @@ export class Server {
     this.userPath = "/api/user";
     this.authPath = "/api/auth";
 
-    this.show();
-
     //conectar db
     this.connectDB();
 
@@ -50,17 +48,6 @@ export class Server {
   listen() {
     this.app.listen(this.port, () => {
       console.log(`Servidor corriendo en el puerto ${this.port}`);
-    });
-  }
-
-  show() {
-    console.table({
-      GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
-      GOOGLE_SECRET_ID: process.env.GOOGLE_SECRET_ID,
-      MONGODB_CNN: process.env.MONGODB_CNN,
-      PASSWORD: process.env.PASSWORD,
-      SECRET_PRIVATE_KEY: process.env.SECRET_PRIVATE_KEY,
-      USER: process.env.USER,
     });
   }
 }
