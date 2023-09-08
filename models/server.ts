@@ -2,18 +2,21 @@ import express, { type Express } from "express";
 import cors from "cors";
 import router from "../routes/user";
 import routerAuth from "../routes/auth";
+import routerCategories from "../routes/categories";
 import { dbConnection } from "../database/config";
 
 export class Server {
   app: Express;
   port: string | undefined;
-  userPath: string = "";
-  authPath: string = "";
+  paths: Record<string, string> = {};
   constructor() {
     this.app = express();
     this.port = process.env.PORT || "3000";
-    this.userPath = "/api/user";
-    this.authPath = "/api/auth";
+    this.paths = {
+      user: "/api/user",
+      auth: "/api/auth",
+      categories: "/api/categories",
+    };
 
     //conectar db
     this.connectDB();
@@ -41,8 +44,9 @@ export class Server {
   }
 
   routes() {
-    this.app.use(this.authPath, routerAuth);
-    this.app.use(this.userPath, router);
+    this.app.use(this.paths.auth, routerAuth);
+    this.app.use(this.paths.user, router);
+    this.app.use(this.paths.categories, routerCategories);
   }
 
   listen() {
