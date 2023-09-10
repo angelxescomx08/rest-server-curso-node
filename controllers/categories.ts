@@ -1,5 +1,10 @@
 import { type Request, type Response } from "express";
-import { schemaCreateCategory, schemaGetCategories } from "../schemas";
+import {
+  schemaCreateCategory,
+  schemaGetCategories,
+  schemaGetCategoryByIdParams,
+  schemaGetCategoryByIdQuery,
+} from "../schemas";
 import { Category } from "../models";
 
 export const getCategories = async (req: Request, res: Response) => {
@@ -18,8 +23,31 @@ export const getCategories = async (req: Request, res: Response) => {
       .populate("user")
       .exec();
     res.json({
+      message: "ok",
       total: 1,
       categories,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Ha ocurrido un error interno al obtener las categorías",
+    });
+  }
+};
+
+export const getCategoryById = async (req: Request, res: Response) => {
+  try {
+    const { id } = schemaGetCategoryByIdParams.parse(req.params);
+    const { populate } = schemaGetCategoryByIdQuery.parse(req.query);
+    const populate_boolean = Boolean(populate);
+    const category = await Category.findById(id).populate("user").exec();
+    if (!category) {
+      return res.status(404).json({
+        message: `No se ha podido encontrar la categoría con id ${id}`,
+      });
+    }
+    res.json({
+      message: "ok",
+      category,
     });
   } catch (error) {
     res.status(500).json({
@@ -44,6 +72,7 @@ export const createCategory = async (req: Request, res: Response) => {
     });
     await newCategory.save();
     res.status(201).json({
+      message: "Categoría creada con éxito",
       category: newCategory,
     });
   } catch (error) {
