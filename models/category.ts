@@ -1,16 +1,17 @@
 import { Schema, model } from "mongoose";
 
 const CategorySchema = new Schema({
-  nombre: {
+  name: {
     type: String,
     require: [true, "El nombre es requerido"],
+    unique: true,
   },
-  estado: {
+  state: {
     type: Boolean,
     require: true,
     default: true,
   },
-  usuario: {
+  user: {
     type: Schema.Types.ObjectId,
     ref: "User",
     require: true,
