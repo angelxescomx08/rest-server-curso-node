@@ -17,15 +17,21 @@ export const getCategories = async (req: Request, res: Response) => {
     const actual_page = Number(page) - 1 < 0 ? 1 : Number(page) - 1;
     const per_page_number = Number(per_page);
     const populate_boolean = Boolean(populate);
-    const categories = await Category.find({ state: true })
-      .limit(per_page_number)
-      .skip(actual_page * per_page_number)
-      .populate("user")
-      .exec();
+    const query = { state: true };
+    const data = await Promise.allSettled([
+      Category.countDocuments(query),
+      Category.find(query)
+        .limit(per_page_number)
+        .skip(actual_page * per_page_number)
+        .populate("user", "name"),
+    ]);
+    if (data.some((result) => result.status === "rejected")) {
+      throw new Error();
+    }
     res.json({
       message: "ok",
-      total: 1,
-      categories,
+      total: data[0].status === "fulfilled" ? data[0].value : 0,
+      categories: data[1].status === "fulfilled" ? data[1].value : [],
     });
   } catch (error) {
     res.status(500).json({
@@ -65,10 +71,9 @@ export const createCategory = async (req: Request, res: Response) => {
         message: `La categoría ${category.name} ya existe`,
       });
     }
-
     const newCategory = new Category({
       name,
-      user: (req as any).user.uid,
+      user: (req as any).user._id,
     });
     await newCategory.save();
     res.status(201).json({
@@ -76,6 +81,7 @@ export const createCategory = async (req: Request, res: Response) => {
       category: newCategory,
     });
   } catch (error) {
+    //console.log(error);
     res.status(400).json({
       message: "El cuerpo de la petición no es correcto",
     });
