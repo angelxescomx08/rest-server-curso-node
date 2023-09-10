@@ -2,15 +2,11 @@ import { Router, type Request, type Response } from "express";
 import { validarJWT } from "../middlewares/validar-jwt";
 import { check } from "express-validator";
 import { validarCampos } from "../middlewares/validar-campos";
-import { createCategory } from "../controllers/categories";
+import { createCategory, getCategories } from "../controllers/categories";
 
 const router = Router();
 
-router.get("/", (req: Request, res: Response) => {
-  res.json({
-    message: "ok",
-  });
-});
+router.get("/", [], getCategories);
 
 router.post(
   "/",
