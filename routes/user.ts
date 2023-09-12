@@ -14,17 +14,17 @@ import { validarJWT } from "../middlewares/validar-jwt";
 import { hasRol } from "../middlewares/validar-roles";
 import { RolType } from "../interfaces/rol";
 
-const router = Router();
+const routerUser = Router();
 
-router.get("/", userGET);
+routerUser.get("/", userGET);
 
-router.get(
+routerUser.get(
   "/:id",
   [check("id", "El id no es un id válido de mongo").isMongoId(), validarCampos],
   userGETById
 );
 
-router.post(
+routerUser.post(
   "/",
   [
     check("name", "El nombre es obligatorio").not().isEmpty(),
@@ -40,7 +40,7 @@ router.post(
   userPOST
 );
 
-router.put(
+routerUser.put(
   "/:id",
   [
     check("id", "El id no es un id válido de mongo").isMongoId(),
@@ -51,7 +51,7 @@ router.put(
   userPUT
 );
 
-router.delete(
+routerUser.delete(
   "/:id",
   [
     validarJWT,
@@ -64,6 +64,6 @@ router.delete(
   userDELETE
 );
 
-router.patch("/", userPATCH);
+routerUser.patch("/", userPATCH);
 
-export default router;
+export default routerUser;

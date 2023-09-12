@@ -11,11 +11,11 @@ import {
 } from "../controllers/categories";
 import { existCategory } from "../helpers/db-validators";
 
-const router = Router();
+const routerCategories = Router();
 
-router.get("/", getCategories);
+routerCategories.get("/", getCategories);
 
-router.get(
+routerCategories.get(
   "/:id",
   [
     check("id", "El id proporcionado no es un id válido").isMongoId(),
@@ -25,7 +25,7 @@ router.get(
   getCategoryById
 );
 
-router.post(
+routerCategories.post(
   "/",
   [
     validarJWT,
@@ -35,7 +35,7 @@ router.post(
   createCategory
 );
 
-router.put(
+routerCategories.put(
   "/:id",
   [
     validarJWT,
@@ -47,7 +47,7 @@ router.put(
   updateCategory
 );
 
-router.delete(
+routerCategories.delete(
   "/:id",
   [
     validarJWT,
@@ -58,4 +58,4 @@ router.delete(
   deleteCategory
 );
 
-export default router;
+export default routerCategories;

@@ -1,14 +1,12 @@
 import express, { type Express } from "express";
 import cors from "cors";
-import router from "../routes/user";
-import routerAuth from "../routes/auth";
-import routerCategories from "../routes/categories";
+import { routerAuth, routerCategories, routerUser } from "../routes";
 import { dbConnection } from "../database/config";
 
 export class Server {
   app: Express;
   port: string | undefined;
-  paths: Record<string, string> = {};
+  paths: Record<"user" | "auth" | "categories" | "products", string>;
   constructor() {
     this.app = express();
     this.port = process.env.PORT || "3000";
@@ -16,6 +14,7 @@ export class Server {
       user: "/api/user",
       auth: "/api/auth",
       categories: "/api/categories",
+      products: "/api/products",
     };
 
     //conectar db
@@ -45,8 +44,9 @@ export class Server {
 
   routes() {
     this.app.use(this.paths.auth, routerAuth);
-    this.app.use(this.paths.user, router);
+    this.app.use(this.paths.user, routerUser);
     this.app.use(this.paths.categories, routerCategories);
+    //this.app.use(this.paths.products, routerProducts);
   }
 
   listen() {

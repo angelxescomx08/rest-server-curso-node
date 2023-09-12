@@ -3,9 +3,9 @@ import { googleSignIn, login } from "../controllers/auth";
 import { check } from "express-validator";
 import { validarCampos } from "../middlewares/validar-campos";
 
-const router = Router();
+const routerAuth = Router();
 
-router.post(
+routerAuth.post(
   "/login",
   [
     check("email", "El correo electrónico es obligatorio").isEmail(),
@@ -15,10 +15,10 @@ router.post(
   login
 );
 
-router.post(
+routerAuth.post(
   "/google",
   [check("id_token", "El id_token es obligatorio").notEmpty(), validarCampos],
   googleSignIn
 );
 
-export default router;
+export default routerAuth;
