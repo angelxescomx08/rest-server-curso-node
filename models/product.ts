@@ -3,12 +3,12 @@ import { Schema, model } from "mongoose";
 const ProductSchema = new Schema({
   name: {
     type: String,
-    require: [true, "El nombre es requerido"],
+    required: [true, "El nombre es requerido"],
     unique: true,
   },
   state: {
     type: Boolean,
-    require: true,
+    required: true,
     default: true,
   },
   user: {

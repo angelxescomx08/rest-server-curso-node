@@ -1,6 +1,11 @@
 import express, { type Express } from "express";
 import cors from "cors";
-import { routerAuth, routerCategories, routerUser } from "../routes";
+import {
+  routerAuth,
+  routerCategories,
+  routerProduct,
+  routerUser,
+} from "../routes";
 import { dbConnection } from "../database/config";
 
 export class Server {
@@ -46,7 +51,7 @@ export class Server {
     this.app.use(this.paths.auth, routerAuth);
     this.app.use(this.paths.user, routerUser);
     this.app.use(this.paths.categories, routerCategories);
-    //this.app.use(this.paths.products, routerProducts);
+    this.app.use(this.paths.products, routerProduct);
   }
 
   listen() {
