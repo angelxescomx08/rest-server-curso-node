@@ -106,9 +106,25 @@ export const updateProduct = async (req: Request, res: Response) => {
       product,
     });
   } catch (error) {
-    console.log(error);
     res.status(500).json({
       message: "Ha ocurrido un error interno al actualizar el producto",
+    });
+  }
+};
+
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = schemaGetProductByIdParams.parse(req.params);
+    const product = await Product.findByIdAndUpdate(id, { state: false });
+    if (!product?.state) {
+      return res.status(404).json({
+        message: "El producto no existe",
+      });
+    }
+    res.json({ message: "El producto se ha eliminado correctamente" });
+  } catch (error) {
+    res.status(500).json({
+      message: "Ha ocurrido un error interno al eliminar el producto",
     });
   }
 };

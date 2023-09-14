@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   createProduct,
+  deleteProduct,
   getProductById,
   getProducts,
   updateProduct,
@@ -67,6 +68,18 @@ routerProduct.put(
     validarCampos,
   ],
   updateProduct
+);
+
+routerProduct.delete(
+  "/:id",
+  [
+    validarJWT,
+    check("id", "El id del producto no es un id valido de mongo")
+      .isMongoId()
+      .custom(existProduct),
+    validarCampos,
+  ],
+  deleteProduct
 );
 
 export default routerProduct;
