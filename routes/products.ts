@@ -59,7 +59,10 @@ routerProduct.put(
       .optional()
       .isMongoId()
       .custom(existIdUser),
-    check("category").optional().isMongoId().custom(existCategory),
+    check("category", "El id de la categoría no es un id valido de mongo")
+      .optional()
+      .isMongoId()
+      .custom(existCategory),
     check("price").optional().isNumeric(),
     validarCampos,
   ],
