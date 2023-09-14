@@ -8,7 +8,11 @@ import {
 import { validarCampos } from "../middlewares/validar-campos";
 import { validarJWT } from "../middlewares/validar-jwt";
 import { check } from "express-validator";
-import { existProduct } from "../helpers/db-validators";
+import {
+  existCategory,
+  existIdUser,
+  existProduct,
+} from "../helpers/db-validators";
 
 const routerProduct = Router();
 
@@ -44,11 +48,19 @@ routerProduct.post(
 );
 
 routerProduct.put(
-  "/id",
+  "/:id",
   [
     validarJWT,
-    check("id", "El id no es un id valido de mongo").isMongoId(),
-    check("id").custom(existProduct),
+    check("id", "El id del producto no es un id valido de mongo")
+      .optional()
+      .isMongoId()
+      .custom(existProduct),
+    check("user", "El id del usuario no es un id valido de mongo")
+      .optional()
+      .isMongoId()
+      .custom(existIdUser),
+    check("category").optional().isMongoId().custom(existCategory),
+    check("price").optional().isNumeric(),
     validarCampos,
   ],
   updateProduct

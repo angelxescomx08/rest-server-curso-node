@@ -27,3 +27,15 @@ export const schemaCreateProduct = z.object({
 });
 
 export type typeCreateProduct = z.infer<typeof schemaCreateProduct>;
+
+//actualizar producto
+export const schemaUpdateProduct = z.object({
+  name: z.string().optional(),
+  price: z.number().optional(),
+  category: z.string().optional(),
+  description: z.string().optional(),
+  available: z.boolean().optional(),
+  user: z.string().optional(),
+});
+
+export type typeUpdateProduct = z.infer<typeof schemaUpdateProduct>;

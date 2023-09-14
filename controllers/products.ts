@@ -3,6 +3,7 @@ import {
   schemaCreateProduct,
   schemaGetProductByIdParams,
   schemaGetProducts,
+  schemaUpdateProduct,
 } from "../schemas";
 import { Product } from "../models";
 
@@ -81,4 +82,33 @@ export const createProduct = async (req: Request, res: Response) => {
   }
 };
 
-export const updateProduct = async (req: Request, res: Response) => {};
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = schemaGetProductByIdParams.parse(req.params);
+    const { available, category, description, name, price, user } =
+      schemaUpdateProduct.parse(req.body);
+
+    const product = await Product.findByIdAndUpdate(
+      id,
+      {
+        available,
+        category,
+        description,
+        name,
+        price,
+        user,
+      },
+      { new: true }
+    );
+
+    res.json({
+      message: "Producto actualizado correctamente",
+      product,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Ha ocurrido un error interno al actualizar el producto",
+    });
+  }
+};
