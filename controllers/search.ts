@@ -12,6 +12,18 @@ const searchUser = async (term: string, res: Response) => {
       results: user ? [user] : [],
     });
   }
+
+  //para que no sea case sensitive
+  const regex = new RegExp(term, "i");
+
+  const users = await User.find({
+    $or: [{ name: regex }, { email: regex }],
+    $and: [{ state: true }],
+  });
+
+  res.json({
+    results: users,
+  });
 };
 
 export const search = (req: Request, res: Response) => {
