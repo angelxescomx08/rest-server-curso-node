@@ -7,11 +7,12 @@ import {
   routerUser,
 } from "../routes";
 import { dbConnection } from "../database/config";
+import routerSearch from "../routes/search";
 
 export class Server {
   app: Express;
   port: string | undefined;
-  paths: Record<"user" | "auth" | "categories" | "products", string>;
+  paths: Record<"user" | "auth" | "categories" | "products" | "search", string>;
   constructor() {
     this.app = express();
     this.port = process.env.PORT || "3000";
@@ -20,6 +21,7 @@ export class Server {
       auth: "/api/auth",
       categories: "/api/categories",
       products: "/api/products",
+      search: "/api/search",
     };
 
     //conectar db
@@ -52,6 +54,7 @@ export class Server {
     this.app.use(this.paths.user, routerUser);
     this.app.use(this.paths.categories, routerCategories);
     this.app.use(this.paths.products, routerProduct);
+    this.app.use(this.paths.search, routerSearch);
   }
 
   listen() {
