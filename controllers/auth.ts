@@ -4,6 +4,7 @@ import { compareSync } from "bcryptjs";
 import { generateJWT } from "../helpers/generate-jwt";
 import { googleLoginSchema } from "../schemas";
 import { VerifyGoogleTokenError, verify } from "../helpers/google-verify";
+import { RolType } from "../interfaces/rol";
 
 export const login = async (req: Request, res: Response) => {
   try {
@@ -63,6 +64,7 @@ export const googleSignIn = async (req: Request, res: Response) => {
         google: true,
         state: true,
         password: "a",
+        rol: RolType.USER_ROL,
       });
       await user.save();
     }

@@ -9,7 +9,7 @@ export const validarJWT = async (
 ) => {
   const token = req.header("x-token");
   if (!token) {
-    res.status(401).json({
+    return res.status(401).json({
       message: "No hay token en la petición",
     });
   }

@@ -1,3 +1,4 @@
+import { Category, Product } from "../models";
 import { Rol } from "../models/rol";
 import { User } from "../models/user";
 
@@ -25,5 +26,19 @@ export const existIdUser = async (id: string) => {
 
   if (!userExist) {
     throw new Error(`El id: ${id} no existe en la base de datos`);
+  }
+};
+
+export const existCategory = async (id: string) => {
+  const categoryExist = await Category.findById(id);
+  if (!categoryExist) {
+    throw new Error(`La categoría con id: ${id} no existe en la base de datos`);
+  }
+};
+
+export const existProduct = async (id: string) => {
+  const productExist = await Product.findById(id);
+  if (!productExist) {
+    throw new Error(`El producto con id: ${id} no existe en la base de datos`);
   }
 };

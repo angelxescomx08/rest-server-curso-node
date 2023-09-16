@@ -64,7 +64,7 @@ export const userPUT = async (req: Request, res: Response) => {
     const salt = bcryptjs.genSaltSync();
     resto.password = bcryptjs.hashSync(password, salt);
   }
-  const user = await User.findByIdAndUpdate(id, resto);
+  const user = await User.findByIdAndUpdate(id, resto, { new: true });
   res.json({
     message: "Usuario actualizado correctamente",
     user,
@@ -73,7 +73,11 @@ export const userPUT = async (req: Request, res: Response) => {
 
 export const userDELETE = async (req: Request, res: Response) => {
   const { id } = req.params;
-  const user = await User.findByIdAndUpdate(id, { state: false });
+  const user = await User.findByIdAndUpdate(
+    id,
+    { state: false },
+    { new: true }
+  );
 
   const authenticatedUser = (req as any).user;
   res.json({
