@@ -15,12 +15,14 @@ export const login = async (req: Request, res: Response) => {
     //Verificar si el email existe en la base de datos
     if (!user) {
       return res.status(400).json({
+        success: false,
         message: "Usuario y/o contraseña incorrectos",
       });
     }
 
     if (!user.state) {
       return res.status(400).json({
+        success: false,
         message: "Usuario y/o contraseña incorrectos - state",
       });
     }
@@ -29,6 +31,7 @@ export const login = async (req: Request, res: Response) => {
     const isValidPassword = compareSync(password, user.password!);
     if (!isValidPassword) {
       return res.status(400).json({
+        success: false,
         message: "Usuario y/o contraseña incorrectos - contraseña",
       });
     }
@@ -37,6 +40,7 @@ export const login = async (req: Request, res: Response) => {
     const token = await generateJWT(user.id);
 
     res.json({
+      success: true,
       message: "Login ok",
       user,
       token,
