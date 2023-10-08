@@ -97,3 +97,10 @@ export const googleSignIn = async (req: Request, res: Response) => {
     }
   }
 };
+
+export const verifyToken = async (req: Request, res: Response) => {
+  res.json({
+    success: true,
+    message: "Token válido",
+  });
+};

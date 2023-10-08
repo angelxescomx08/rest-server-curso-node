@@ -10,6 +10,7 @@ export const validarJWT = async (
   const token = req.header("x-token");
   if (!token) {
     return res.status(401).json({
+      success: false,
       message: "No hay token en la petición",
     });
   }
@@ -22,12 +23,14 @@ export const validarJWT = async (
 
     if (!user) {
       return res.status(401).json({
+        success: false,
         message: "Token no válido",
       });
     }
 
     if (!user.state) {
       return res.status(401).json({
+        success: false,
         message: "Token no válido",
       });
     }
@@ -37,6 +40,7 @@ export const validarJWT = async (
   } catch (error) {
     console.log(error);
     res.status(401).json({
+      success: false,
       message: "No autorizado",
     });
   }
