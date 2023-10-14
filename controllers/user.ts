@@ -53,6 +53,7 @@ export const userPOST = async (req: Request, res: Response) => {
 
   await user.save();
   res.status(201).json({
+    success: true,
     user,
   });
 };
